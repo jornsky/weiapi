@@ -2,6 +2,12 @@
  Created by 七月 on 2018/5/7.
 """
 from .app import Flask
+from werobot import WeRoBot
+from werobot.contrib.flask import make_view
+
+
+myrobot = WeRoBot(token='weixin')
+
 __author__ = '七月'
 
 
@@ -19,6 +25,10 @@ def register_plugin(app):
 
 def create_app():
     app = Flask(__name__)
+    app.add_url_rule(rule='/robot/',  # WeRoBot 挂载地址
+                     endpoint='werobot',  # Flask 的 endpoint
+                     view_func=make_view(myrobot),
+                     methods=['GET', 'POST'])
     app.config.from_object('app.config.setting')
     app.config.from_object('app.config.secure')
 
